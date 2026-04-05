@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+    <h1>Online Pharmacy</h1>
+</header>
+
+<!-- REGISTER BOX -->
+<div class="form-container">
+
+    <div class="form-box">
+
+        <h2>Create Account 📝</h2>
+        <p class="sub-text">Join us and start shopping</p>
+
+        <!-- ✅ FIXED: correct JS file -->
+        <form onsubmit="registerUser(event)">
+
+            <input type="text" id="fullName" placeholder="Full Name" required>
+
+            <input type="email" id="email" placeholder="Email Address" required>
+
+            <input type="password" id="password" placeholder="Password" required>
+
+            <input type="text" id="phone" placeholder="Phone Number" required>
+
+            <button type="submit" class="btn btn-primary">
+                Register
+            </button>
+
+        </form>
+
+        <p class="bottom-text">
+            Already have an account? <a href="/login">Login</a>
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ✅ FIXED: use auth.js (not register.js) -->
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+
+</body>
+</html>

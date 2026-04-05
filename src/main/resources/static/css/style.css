@@ -1,0 +1,263 @@
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #e8f5e9, #ffffff);
+}
+
+/* ===== HEADER ===== */
+.main-header {
+    background: linear-gradient(90deg, #2e7d32, #43a047);
+    padding: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.nav {
+    margin-top: 10px;
+}
+
+.nav a {
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav a:hover {
+    opacity: 0.8;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+/* ===== TITLES ===== */
+.title {
+    text-align: center;
+    font-size: 28px;
+    margin: 30px 0;
+}
+
+/* ===== GRID ===== */
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+/* ===== CARD ===== */
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    width: 230px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: #2e7d32;
+}
+
+.btn-primary:hover {
+    background: #1b5e20;
+}
+
+.btn-secondary {
+    background: #1565c0;
+}
+
+.btn-secondary:hover {
+    background: #0d47a1;
+}
+
+/* ===== LOGIN / REGISTER ===== */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.form-box {
+    width: 350px;
+    padding: 35px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.form-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.form-box input:focus {
+    border-color: #2e7d32;
+    outline: none;
+}
+
+/* ===== HERO ===== */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(120deg, #2e7d32, #66bb6a);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 40px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* ===== CART ===== */
+.cart-wrapper {
+    display: flex;
+    gap: 30px;
+    width: 90%;
+    margin: 40px auto;
+}
+
+.cart-items-box {
+    flex: 2;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.cart-summary-box {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* ===== ORDERS ===== */
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.order-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ===== ADMIN DASHBOARD ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.highlight {
+    background: linear-gradient(120deg, #2e7d32, #66bb6a);
+    color: white;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.admin-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.list-box {
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.list-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width: 768px) {
+    .cart-wrapper {
+        flex-direction: column;
+    }
+}
+input {
+    border: 1px solid #ccc !important;
+    outline: none;
+}
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.order-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.order-card:hover {
+    transform: translateY(-8px);
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Pharmacy</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body onload="checkAuth()">
+
+<!-- HEADER -->
+<header class="main-header">
+    <h1>🏥 Online Pharmacy</h1>
+
+    <nav class="nav">
+        <a href="/medicines">Medicines</a>
+        <a href="/cart">Cart</a>
+        <a href="/orders">Orders</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </nav>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <h1>Your Health, Our Priority 💚</h1>
+    <p>Get authentic medicines delivered to your doorstep</p>
+
+    <a href="/medicines" class="btn btn-primary">
+        Shop Now
+    </a>
+</section>
+
+<!-- MEDICINES SECTION -->
+<section class="container">
+    <h2 class="title">💊 Available Medicines</h2>
+    <div id="medicineContainer" class="grid"></div>
+</section>
+
+<!-- JS -->
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    fetch(API + "/medicines")
+    .then(res => res.json())
+    .then(data => {
+
+        const container = document.getElementById('medicineContainer');
+        container.innerHTML = "";
+
+        data.forEach(med => {
+
+            container.innerHTML += `
+                <div class="card">
+
+                    <img src="${med.imageUrl}" 
+                         onerror="this.src='https://via.placeholder.com/300x150?text=Medicine'">
+
+                    <h3>${med.name}</h3>
+
+                    <h2 class="price">₹${med.price}</h2>
+
+                    <button onclick="buyNow(${med.id})" class="btn btn-primary">
+                        Buy Now
+                    </button>
+
+                </div>
+            `;
+        });
+    });
+});
+
+function buyNow(id) {
+
+    const userId = localStorage.getItem("userId");
+
+    fetch(API + "/cart/add", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            userId: parseInt(userId),
+            medicineId: id,
+            quantity: 1
+        })
+    })
+    .then(() => {
+        return fetch(API + "/order/place/" + userId, { method: "POST" });
+    })
+    .then(() => {
+        alert("Order placed successfully ✅");
+        window.location.href = "/orders";
+    })
+    .catch(() => {
+        alert("Order failed ❌");
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+const API = "http://localhost:8099/api/".replace(/\/$/, "");

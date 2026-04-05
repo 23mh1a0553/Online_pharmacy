@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+    <h1>Online Pharmacy</h1>
+</header>
+
+<!-- LOGIN BOX -->
+<div class="form-container">
+
+    <div class="form-box">
+
+        <h2>Welcome Back 👋</h2>
+        <p class="sub-text">Login to continue</p>
+
+        <form onsubmit="loginUser(event)">
+
+            <input type="email" id="email" placeholder="Enter Email" required>
+
+            <input type="password" id="password" placeholder="Enter Password" required>
+
+            <button type="submit" class="btn btn-primary">
+                Login
+            </button>
+
+        </form>
+
+        <p class="bottom-text">
+            New user? <a href="/register">Create Account</a>
+        </p>
+
+    </div>
+
+</div>
+
+<!-- JS (UNCHANGED) -->
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+
+</body>
+</html>
