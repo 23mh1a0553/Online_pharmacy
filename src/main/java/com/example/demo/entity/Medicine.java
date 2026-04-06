@@ -15,14 +15,18 @@ public class Medicine {
     private double price;
 
     private String imageUrl;
+    
+    private String category; 
 
     // Constructors
     public Medicine() {}
 
-    public Medicine(String name, double price, String imageUrl) {
+    public Medicine(String name, double price, String imageUrl,String category) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.category = category;
+        
     }
 
     // Getters and Setters
@@ -52,5 +56,8 @@ public class Medicine {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+    public void setCategory(String category) {
+    	this.category = category;
     }
 }

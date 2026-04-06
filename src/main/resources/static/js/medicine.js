@@ -1,64 +1,89 @@
 const userId = localStorage.getItem("userId");
+let allMedicines = [];
 
-/* ================= LOAD MEDICINES ================= */
+/* ================= LOAD ================= */
 function loadMedicines() {
-
-    const container = document.getElementById("medicineList");
-
-    container.innerHTML = `
-        <div style="text-align:center;">
-            <div class="loader"></div>
-            <p>Loading medicines...</p>
-        </div>
-    `;
 
     fetch(API + "/medicines")
         .then(res => res.json())
         .then(data => {
-
-            container.innerHTML = "";
-
-            if (!data || data.length === 0) {
-                container.innerHTML = "<h3>No medicines available 💊</h3>";
-                return;
-            }
-
-            data.forEach(med => {
-
-                container.innerHTML += `
-                    <div class="card">
-
-                        <!-- ✅ FIXED IMAGE HANDLING -->
-                        <img src="${med.imageUrl}" 
-                             alt="${med.name}"
-                             loading="lazy"
-                             style="height:150px; object-fit:contain; background:#f5f5f5;"
-                             onerror="this.onerror=null; this.src='/images/default-medicine.png'">
-
-                        <h3>${med.name}</h3>
-
-                        <p style="color:#2e7d32; font-weight:bold;">
-                            ₹${med.price}
-                        </p>
-
-                        <button class="btn btn-primary" onclick="addToCart(${med.id})">
-                            🛒 Add to Cart
-                        </button>
-
-                        <button class="btn btn-secondary" onclick="buyNow(${med.id})">
-                            ⚡ Buy Now
-                        </button>
-
-                    </div>
-                `;
-            });
+            allMedicines = data;
+            renderMedicines(data);
         })
-        .catch(err => {
-            console.error("ERROR:", err);
-            container.innerHTML = "<h3>Error loading medicines ❌</h3>";
+        .catch(() => {
+            document.getElementById("medicineList").innerHTML = "<h3>Error loading medicines ❌</h3>";
         });
 }
 
+/* ================= RENDER (FIXED NO FLICKER) ================= */
+function renderMedicines(data) {
+
+    const container = document.getElementById("medicineList");
+
+    let html = "";
+
+    data.forEach(med => {
+
+        html += `
+            <div class="card">
+
+                <img src="${med.imageUrl}" 
+                     loading="lazy"
+                     style="height:150px; object-fit:contain; background:#f5f5f5;"
+                     onerror="this.src='/images/default-medicine.png'">
+
+                <h3>${med.name}</h3>
+
+                <p>₹${med.price}</p>
+
+                <small>${med.category || ""}</small>
+
+                <button class="btn btn-primary" onclick="addToCart(${med.id})">
+                    Add to Cart
+                </button>
+
+            </div>
+        `;
+    });
+
+    container.innerHTML = html; // ✅ SINGLE RENDER
+}
+
+/* ================= SEARCH ================= */
+document.addEventListener("DOMContentLoaded", () => {
+
+    const search = document.getElementById("searchInput");
+    const category = document.getElementById("categoryFilter");
+
+    if (search) {
+        search.addEventListener("input", function () {
+
+            const value = this.value.toLowerCase();
+
+            const filtered = allMedicines.filter(m =>
+                m.name.toLowerCase().includes(value)
+            );
+
+            renderMedicines(filtered);
+        });
+    }
+
+    if (category) {
+        category.addEventListener("change", function () {
+
+            const value = this.value;
+
+            if (!value) {
+                renderMedicines(allMedicines);
+                return;
+            }
+
+            const filtered = allMedicines.filter(m => m.category === value);
+
+            renderMedicines(filtered);
+        });
+    }
+});
 
 /* ================= ADD TO CART ================= */
 function addToCart(id) {
@@ -71,7 +96,7 @@ function addToCart(id) {
 
     fetch(API + "/cart/add", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             userId: parseInt(userId),
             medicineId: id,
@@ -86,41 +111,6 @@ function addToCart(id) {
         showToast("Error adding to cart ❌");
     });
 }
-
-
-/* ================= BUY NOW ================= */
-function buyNow(id) {
-
-    if (!userId) {
-        showToast("Please login first ❌");
-        setTimeout(() => window.location.href = "/login", 1200);
-        return;
-    }
-
-    fetch(API + "/cart/add", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            userId: parseInt(userId),
-            medicineId: id,
-            quantity: 1
-        })
-    })
-    .then(() => fetch(API + "/order/place/" + userId, { method: "POST" }))
-    .then(res => {
-        if (!res.ok) throw new Error();
-
-        showToast("Order placed successfully ✅");
-
-        setTimeout(() => {
-            window.location.href = "/orders";
-        }, 1200);
-    })
-    .catch(() => {
-        showToast("Order failed ❌");
-    });
-}
-
 
 /* ================= TOAST ================= */
 function showToast(message) {
@@ -144,6 +134,5 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2500);
 }
 
-
-/* ================= AUTO LOAD ================= */
+/* ================= INIT ================= */
 window.onload = loadMedicines;

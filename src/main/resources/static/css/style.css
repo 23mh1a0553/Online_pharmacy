@@ -261,3 +261,7 @@ input {
 .order-card:hover {
     transform: translateY(-8px);
 }
+#searchInput, #categoryFilter {
+    margin: 10px;
+    border: 1px solid #ccc;
+}
