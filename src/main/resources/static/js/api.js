@@ -1,4 +1,4 @@
-const API = "http://localhost:8099/api";
+const API = window.location.origin;
 
 async function apiRequest(endpoint, method = "GET", body = null) {
 
