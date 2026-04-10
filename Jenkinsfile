@@ -47,7 +47,7 @@ pipeline {
         stage('3. SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
-                withSonarQubeEnv('sonar-server') {
+                withSonarQubeEnv('sonarcse') {
                     bat 'mvn sonar:sonar -Dsonar.projectKey=online-pharmacy'
                 }
             }
