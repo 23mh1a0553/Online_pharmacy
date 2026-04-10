@@ -39,7 +39,7 @@ function renderMedicines(data) {
                 <img src="${med.imageUrl || '/images/default-medicine.png'}"
                      loading="lazy"
                      style="height:150px; object-fit:contain; background:#f5f5f5;"
-                     onerror="this.onerror=null; this.src='/images/default-medicine.png';">
+                     onerror="this.onerror=null; this.src='/images/default-medicine.jpg';">
 
                 <h3>${med.name}</h3>
 

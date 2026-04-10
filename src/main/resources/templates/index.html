@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             container.innerHTML += `
                 <div class="card">
 
-                    <img src="${med.imageUrl}" 
+                    <img th:src="@{${med.imageUrl}}" alt="Medicine Image" 
                          onerror="this.src='https://via.placeholder.com/300x150?text=Medicine'">
 
                     <h3>${med.name}</h3>
