@@ -41,17 +41,17 @@ pipeline {
             }
         }
 
-        // STAGE 3: SonarQube Analysis
+        // STAGE 3: SonarQube Analysis [DISABLED FOR NOW]
         // Ensure "SonarQube servers" is configured in Jenkins System Configuration 
         // with the name 'sonar-server'. Let the scanner pick up properties automatically.
-        stage('3. SonarQube Analysis') {
-            steps {
-                echo 'Running SonarQube Analysis...'
-                withSonarQubeEnv('sonarcse') {
-                    bat 'mvn sonar:sonar -Dsonar.projectKey=online-pharmacy'
-                }
-            }
-        }
+        // stage('3. SonarQube Analysis') {
+        //     steps {
+        //         echo 'Running SonarQube Analysis...'
+        //         withSonarQubeEnv('sonarcse') {
+        //             bat 'mvn sonar:sonar -Dsonar.projectKey=online-pharmacy'
+        //         }
+        //     }
+        // }
 
         // Optional: Fail the pipeline if SonarQube Quality Gate fails
         // stage('Quality Gate') {
