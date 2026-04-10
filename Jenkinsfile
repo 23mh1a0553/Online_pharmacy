@@ -37,7 +37,7 @@ pipeline {
             steps {
                 echo 'Running Unit Tests and Generating Jacoco Coverage...'
                 // We use clean test to ensure fresh test runs
-                sh 'mvn clean test'
+                bat 'mvn clean test'
             }
         }
 
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 echo 'Running SonarQube Analysis...'
                 withSonarQubeEnv('sonar-server') {
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=online-pharmacy'
+                    bat 'mvn sonar:sonar -Dsonar.projectKey=online-pharmacy'
                 }
             }
         }
@@ -67,7 +67,7 @@ pipeline {
             steps {
                 echo 'Building Jar Package...'
                 // Skip tests here since we already ran them in Step 2
-                sh 'mvn clean package -DskipTests'
+                bat 'mvn clean package -DskipTests'
             }
         }
 
@@ -75,7 +75,7 @@ pipeline {
         stage('5. Docker Image') {
             steps {
                 echo 'Building Docker Image...'
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
 
@@ -84,8 +84,8 @@ pipeline {
             steps {
                 echo 'Logging into Docker Hub and Pushing Image...'
                 withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDS_ID}", passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
-                    sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
-                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                    bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
+                    bat "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
@@ -97,25 +97,7 @@ pipeline {
                 // Utilizing SSH Agent plugin to connect to the target machine securely
                 sshagent(credentials: ["${EC2_SSH_KEY_ID}"]) {
                     // Disable strict host key checking for automated pipelines
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_IP} '
-                        echo "Logged into EC2..."
-                        
-                        # Stop and remove any existing container running on port 8099
-                        docker ps -q --filter "name=online-pharmacy" | grep -q . && docker stop online-pharmacy && docker rm -fv online-pharmacy || true
-                        
-                        # Remove the old image so we force a fresh pull
-                        docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true
-                        
-                        # Pull the latest image
-                        docker pull ${IMAGE_NAME}:${IMAGE_TAG}
-                        
-                        # Run the new container
-                        docker run -d --name online-pharmacy -p 8099:8099 ${IMAGE_NAME}:${IMAGE_TAG}
-                        
-                        echo "Deployment Complete!"
-                    '
-                    """
+                    bat "ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_IP} \"echo Logged into EC2... && docker stop online-pharmacy || true && docker rm -fv online-pharmacy || true && docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true && docker pull ${IMAGE_NAME}:${IMAGE_TAG} && docker run -d --name online-pharmacy -p 8099:8099 ${IMAGE_NAME}:${IMAGE_TAG} && echo Deployment Complete!\""
                 }
             }
         }
@@ -127,7 +109,7 @@ pipeline {
             // Clean up workspace after build to save space
             cleanWs()
             // Logout of Docker
-            sh 'docker logout || true'
+            bat 'docker logout || exit 0'
         }
         success {
             echo 'Pipeline successfully completed!'
