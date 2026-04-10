@@ -1,4 +1,4 @@
-const API = window.location.origin;
+const API = window.location.origin + "/api";
 
 async function apiRequest(endpoint, method = "GET", body = null) {
 

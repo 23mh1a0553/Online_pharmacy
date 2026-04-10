@@ -50,17 +50,33 @@ function loadCart() {
 /* ================= CHECKOUT ================= */
 function checkout() {
 
-    fetch(API + "/order/place/" + userId, { method: "POST" })
-    .then(res => {
-        if (!res.ok) throw new Error();
-        alert("Order placed successfully ✅");
-        loadCart();
-    })
-    .catch(() => {
-        alert("Order failed ❌");
+    fetch(API + "/cart/" + userId)
+    .then(res => res.json())
+    .then(cartItems => {
+
+        if (!cartItems || cartItems.length === 0) {
+            alert("Cart is empty ❌");
+            return;
+        }
+
+        fetch(API + "/order/place/" + userId, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(cartItems)   // ✅ IMPORTANT
+        })
+        .then(res => {
+            if (!res.ok) throw new Error();
+            alert("Order placed successfully ✅");
+            loadCart();
+        })
+        .catch(() => {
+            alert("Order failed ❌");
+        });
+
     });
 }
-
 
 /* ================= DOWNLOAD ================= */
 function downloadInvoice() {

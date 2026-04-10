@@ -269,3 +269,7 @@ input {
     transform: scale(1.03);
     transition: 0.2s;
 }
+.overlay {
+  position: fixed;
+  background: rgba(0,0,0,0.7);
+}
